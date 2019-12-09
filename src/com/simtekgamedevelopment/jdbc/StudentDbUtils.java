@@ -2,27 +2,30 @@ package com.simtekgamedevelopment.jdbc;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-public class HunterDbUtils {
-	private DataSource dbSrc;
+import com.simtekgamedevelopment.Student;
 
-	public HunterDbUtils(DataSource dbSrc) {
-		this.dbSrc = dbSrc;
+public class StudentDbUtils {
+	private DataSource ds;
+
+	public StudentDbUtils(DataSource ds) {
+		this.ds = ds;
 	}
-	
-	public List<Hunter> getHunters() {
-		List<Hunter> hunterArr = new ArrayList<>();
+
+	public List<Student> getStudents() throws SQLException {
+		ArrayList<Student> arr = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			conn = dbSrc.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			String sql = "select * from public.\"Hunters\"";
 			rs = stmt.executeQuery(sql);
@@ -31,22 +34,22 @@ public class HunterDbUtils {
 				String lname = rs.getString("lastname");
 				String email = rs.getString("email");
 				long id = rs.getLong("id");
-				Hunter hunter = new Hunter(fname, lname, email);
-				hunterArr.add(hunter);
+				Student student = new Student(id, fname, lname, email);
+				arr.add(student);
 				
 			}
-			return hunterArr;
+			return arr;
 		} catch(Exception e) {
-			e.printStackTrace();
-			
+			e.getMessage();
 		} finally {
 			close(conn, stmt, rs);
 		}
+	
+		
 		return null;
 	}
 
-	private void close(Connection conn, Statement stmt, ResultSet rs) {
-		try {
+	private void close(Connection conn, Statement stmt, ResultSet rs) throws SQLException {
 		if (conn != null) {
 			conn.close();
 		}
@@ -56,8 +59,6 @@ public class HunterDbUtils {
 		if (rs != null) {
 			rs.close();
 		}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}	
+	}
+
 }

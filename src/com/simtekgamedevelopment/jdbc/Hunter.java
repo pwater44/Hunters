@@ -1,6 +1,7 @@
 package com.simtekgamedevelopment.jdbc;
 
 public class Hunter {
+	private long id;
 	private String fname;
 	private String lname;
 	private String email;
