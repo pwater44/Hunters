@@ -1,9 +1,11 @@
 package com.simtekgamedevelopment.jdbc;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,12 +32,45 @@ public class HunterControllerServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		listHunters(request, response);
-
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			String command = request.getParameter("command");
+			System.out.println("!!!!!!!");
+			if (command == null) {
+				command = "LIST";
+			}
+			switch(command) {
+			case "LIST":
+				listHunters(request, response);
+				break;
+			case "ADD":
+				addHunter(request, response);
+				break;			
+			default:
+				listHunters(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServletException(e);
+		}
 	}
 	
-	private void listHunters(HttpServletRequest request, HttpServletResponse response) {
+	private void addHunter(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		System.out.println("I am in addhUNTER");
+		String firstName = request.getParameter("firstName");
+		System.out.println("firstName = " + firstName);
+		String lastName = request.getParameter("lastName");
+		System.out.println("lastName = " + lastName);
+		String email = request.getParameter("email");
+		Hunter hunter = new Hunter(System.currentTimeMillis(), firstName, lastName, email);
+		dbUtil.addHunter(hunter);
+		listHunters(request, response);
+		
+	}
+
+	private void listHunters(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		List<Hunter> hunters = dbUtil.getHunters();
+		request.setAttribute("HUNTER_LIST", hunters);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-hunters.jsp");
+		dispatcher.forward(request, response);
 	} 
 }

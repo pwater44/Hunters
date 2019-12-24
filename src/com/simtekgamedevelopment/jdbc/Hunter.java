@@ -6,11 +6,19 @@ public class Hunter {
 	private String lname;
 	private String email;
 	
-	public Hunter(String fname, String lname, String email) {
-		
+	public Hunter(long id, String fname, String lname, String email) {
+		this.id = id;
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFname() {
