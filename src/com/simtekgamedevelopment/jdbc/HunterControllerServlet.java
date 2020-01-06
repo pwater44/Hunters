@@ -44,9 +44,13 @@ public class HunterControllerServlet extends HttpServlet {
 				break;
 			case "ADD":
 				addHunter(request, response);
-				break;			
+				break;	
+			case "UPDATE":
+				updateHunter(request, response);
+				break;
 			default:
 				listHunters(request, response);
+				break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +58,11 @@ public class HunterControllerServlet extends HttpServlet {
 		}
 	}
 	
+	private void updateHunter(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void addHunter(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		System.out.println("I am in addhUNTER");
 		String firstName = request.getParameter("firstName");

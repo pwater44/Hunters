@@ -1,4 +1,5 @@
 <%@ page import="java.util.*, com.simtekgamedevelopment.jdbc.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="C" %>
 <!DOCTYPE html>
 <html>
 <head>
